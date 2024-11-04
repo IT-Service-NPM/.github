@@ -1,0 +1,27 @@
+{
+	"files.exclude": {
+		".git": true,
+		"node_modules/": true,
+		"**/Thumbs.db": true,
+		"Thumbs.db": true,
+		"**/.~lock.*": true
+	},
+	"files.associations": {
+		"LICENSE": "plaintext",
+		"NOTICE": "plaintext"
+	},
+	"[markdown]": {
+		"editor.formatOnSave": true,
+		"editor.formatOnPaste": true,
+	},
+	"editor.autoClosingTags": false,
+	"editor.linkedEditing": true,
+	"editor.folding": true,
+	"editor.foldingHighlight": true,
+	"editor.foldingStrategy": "auto",
+	"editor.formatOnSave": true,
+	"editor.formatOnPaste": false,
+	"files.trimTrailingWhitespace": true,
+	"files.insertFinalNewline": true,
+	"task.autoDetect": "off"
+}

@@ -1,0 +1,44 @@
+{
+	"version": "0.2",
+	"ignorePaths": [
+		".git",
+		".git/**",
+		".vscode/*",
+		"node_modules",
+		"**/node_modules",
+		"**/node_modules/**",
+		"node_modules/**"
+	],
+	"language": "ru,en",
+	"dictionaries": [],
+	"words": [
+		"arethetypeswrong",
+		"attw",
+		"Betke",
+		"commitlint",
+		"dependabot",
+		"deps",
+		"distclean",
+		"editorconfig",
+		"endregion",
+		"findit",
+		"gulpfile",
+		"gulplog",
+		"gulpplugin",
+		"gutil",
+		"lcov",
+		"MAINT",
+		"markdownlint",
+		"sergey",
+		"streamx",
+		"testfile",
+		"tsdoc",
+		"tsup",
+		"typecheck",
+		"winget"
+	],
+	"ignoreRegExpList": [
+		"\\[.*?\\]\\(.*?\\)"
+	],
+	"enableFiletypes": []
+}
