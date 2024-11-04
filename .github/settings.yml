@@ -108,4 +108,4 @@ branches:
         # contexts: []
 
       # Required. Enforce all configured restrictions for administrators. Set to true to enforce required status checks for repository administrators. Set to null to disable.
-      enforce_admins: true
+      enforce_admins: false
