@@ -23,5 +23,8 @@
 	"editor.formatOnPaste": false,
 	"files.trimTrailingWhitespace": true,
 	"files.insertFinalNewline": true,
-	"task.autoDetect": "off"
+	"task.autoDetect": "off",
+	"conventionalCommits.scopes": [
+		"github"
+	]
 }
