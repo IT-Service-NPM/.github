@@ -1,0 +1,90 @@
+name: Deployment to npmJS repository
+
+on:
+  workflow_call:
+    inputs:
+      deployment-environment:
+        description: GitHub deployment environment
+        required: false
+        type: string
+        default: npm
+
+concurrency:
+  group: ${{ github.repository }}/${{ github.ref }}/${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-to-npmJS:
+    environment: ${{ inputs.deployment-environment }}
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      deployments: write
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    steps:
+
+      - uses: actions/checkout@v6
+
+      - name: Setup NodeJS latest
+        id: setup-node
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
+
+      - name: Cache dependencies
+        id: cache-deps
+        uses: actions/cache@v5
+        with:
+          path: node_modules
+          key: OS:ubuntu-latest:Node:latest:package.json:${{hashFiles('package.json')}}
+
+      - name: Install dependencies
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Cache package dist
+        id: cache-dist
+        uses: actions/cache@v5
+        with:
+          path: dist
+          key: package-dist-${{github.run_id}}
+
+      - name: Build
+        if: steps.cache-dist.outputs.cache-hit != 'true'
+        run: npm run build
+
+      - name: Cache readme.md
+        id: cache-readme
+        uses: actions/cache@v5
+        with:
+          path: readme.md
+          key: package-readme-${{github.run_id}}
+
+      - name: Update readme.md
+        if: steps.cache-readme.outputs.cache-hit != 'true'
+        run: npm run update-readme
+
+      - name: Cache package.json
+        id: cache-package-json
+        uses: actions/cache@v5
+        with:
+          path: package.json
+          key: package.json-${{github.run_id}}
+
+      - uses: codfish/semantic-release-action@v4
+        if: steps.cache-package-json.outputs.cache-hit != 'true'
+        with:
+          branches: main
+          plugins: |
+            [
+              ["@semantic-release/commit-analyzer", {
+                "preset": "angular"
+              }]
+            ]
+
+      - uses: JS-DevTools/npm-publish@v4
