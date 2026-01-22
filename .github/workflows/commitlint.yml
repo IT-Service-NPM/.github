@@ -1,0 +1,17 @@
+name: Checking commit messages
+
+on:
+  workflow_call:
+
+concurrency:
+  group: ${{ github.repository }}/${{ github.ref }}/${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v6
