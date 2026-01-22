@@ -8,6 +8,11 @@ on:
         required: false
         type: string
         default: npm
+      force:
+        required: false
+        type: boolean
+        default: false
+        description: force deployment, without version checking
 
 concurrency:
   group: ${{ github.repository }}/${{ github.ref }}/${{ github.workflow }}
@@ -88,3 +93,10 @@ jobs:
             ]
 
       - uses: JS-DevTools/npm-publish@v4
+        if: ${{ !inputs.force }}
+
+      - name: publishing without version checking
+        if: ${{ inputs.force }}
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
