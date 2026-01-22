@@ -7,11 +7,6 @@ concurrency:
   group: ${{ github.repository }}/${{ github.ref }}/${{ github.workflow }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-  actions: read
-  pull-requests: write
-
 jobs:
   check_dependencies:
     runs-on: ubuntu-latest
