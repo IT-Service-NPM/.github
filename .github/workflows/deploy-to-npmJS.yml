@@ -33,62 +33,29 @@ jobs:
     steps:
 
       - uses: actions/checkout@v6
-
-      - name: Setup NodeJS latest
-        id: setup-node
-        uses: actions/setup-node@v6
         with:
-          node-version: latest
+          fetch-depth: 1
 
-      - name: Cache dependencies
-        id: cache-deps
-        uses: actions/cache@v5
+      - name: Download package 'dist'
+        uses: actions/download-artifact@v6
         with:
-          path: node_modules
-          key: OS:ubuntu-latest:Node:latest:package.json:${{hashFiles('package.json')}}
-
-      - name: Install dependencies
-        if: steps.cache-deps.outputs.cache-hit != 'true'
-        run: npm install
-
-      - name: Cache package dist
-        id: cache-dist
-        uses: actions/cache@v5
-        with:
-          path: dist
-          key: package-dist-${{github.run_id}}
-
-      - name: Build
-        if: ${{ steps.cache-dist.outputs.cache-hit != 'true' }}
-        run: npm run build
+          name: dist
+          path: dist/
 
       - name: Cache readme.md
+        # TODO: replace with download-artifact
         id: cache-readme
         uses: actions/cache@v5
         with:
           path: readme.md
           key: package-readme-${{github.run_id}}
 
-      - name: Update readme.md
-        if: ${{ steps.cache-readme.outputs.cache-hit != 'true' }}
-        run: npm run update-readme
-
       - name: Cache package.json
+        # TODO: replace with download-artifact
         id: cache-package-json
         uses: actions/cache@v5
         with:
           path: package.json
           key: package.json-${{github.run_id}}
-
-      - uses: codfish/semantic-release-action@v4
-        if: ${{ steps.cache-package-json.outputs.cache-hit != 'true' }}
-        with:
-          branches: main
-          plugins: |
-            [
-              ["@semantic-release/commit-analyzer", {
-                "preset": "angular"
-              }]
-            ]
 
       - uses: JS-DevTools/npm-publish@v4
