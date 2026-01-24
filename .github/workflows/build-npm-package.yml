@@ -43,16 +43,14 @@ jobs:
         # if: ${{ inputs.ignore-cache || ! steps.cache-deps.outputs.cache-hit }}
         run: npm install
 
-      - name: Cache package dist
-        # TODO: удалить это кэширование и устанавливать для последующих операций пакет из артефакта сборки
-        id: cache-dist
-        uses: actions/cache@v5
-        with:
-          path: dist
-          key: package-dist-${{github.run_id}}
-
       - name: Build
         run: npm run build
+
+      - name: Upload package 'dist'
+        uses: actions/upload-artifact@v6
+        with:
+          name: dist
+          path: dist/
 
       - name: Pack
         run: npm pack
