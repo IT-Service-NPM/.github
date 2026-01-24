@@ -33,13 +33,14 @@ jobs:
 
       - name: Cache dependencies
         id: cache-deps
+        if: ${{ inputs.ignore-cache != 'true' }}
         uses: actions/cache@v5
         with:
           path: node_modules
           key: OS:ubuntu-latest:Node:latest:package.json:${{hashFiles('package.json')}}
 
       - name: Install dependencies
-        if: inputs.ignore-cache == 'true' || steps.cache-deps.outputs.cache-hit != 'true'
+        if: ${{ inputs.ignore-cache == 'true' || steps.cache-deps.outputs.cache-hit != 'true' }}
         run: npm install
 
       - name: Cache package dist

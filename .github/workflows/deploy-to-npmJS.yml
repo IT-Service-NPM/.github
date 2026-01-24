@@ -59,7 +59,7 @@ jobs:
           key: package-dist-${{github.run_id}}
 
       - name: Build
-        if: steps.cache-dist.outputs.cache-hit != 'true'
+        if: ${{ steps.cache-dist.outputs.cache-hit != 'true' }}
         run: npm run build
 
       - name: Cache readme.md
@@ -70,7 +70,7 @@ jobs:
           key: package-readme-${{github.run_id}}
 
       - name: Update readme.md
-        if: steps.cache-readme.outputs.cache-hit != 'true'
+        if: ${{ steps.cache-readme.outputs.cache-hit != 'true' }}
         run: npm run update-readme
 
       - name: Cache package.json
@@ -81,7 +81,7 @@ jobs:
           key: package.json-${{github.run_id}}
 
       - uses: codfish/semantic-release-action@v4
-        if: steps.cache-package-json.outputs.cache-hit != 'true'
+        if: ${{ steps.cache-package-json.outputs.cache-hit != 'true' }}
         with:
           branches: main
           plugins: |
