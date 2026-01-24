@@ -22,6 +22,9 @@ jobs:
     name: 'Build NPM package'
     runs-on: ubuntu-latest
     steps:
+      - name: debug
+        run: echo test-test-${{ inputs.ignore-cache }}-test-test
+
       - uses: actions/checkout@v6
         with:
           fetch-depth: 1
