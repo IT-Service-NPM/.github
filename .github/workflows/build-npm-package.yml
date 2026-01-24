@@ -51,6 +51,8 @@ jobs:
         with:
           name: dist
           path: dist/
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Pack
         run: npm pack
@@ -61,4 +63,3 @@ jobs:
           name: Package tarball
           path: ./*.tgz
           if-no-files-found: error
-          overwrite: true
