@@ -6,7 +6,6 @@ on:
       ignore-cache:
         required: false
         type: boolean
-        default: false
         description: build without node_modules cache
 
 concurrency:
