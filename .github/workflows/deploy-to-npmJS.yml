@@ -15,7 +15,7 @@ on:
         description: force deployment
 
 concurrency:
-  group: ${{ github.repository }}/${{ github.ref }}/${{ github.workflow }}
+  group: ${{ github.repository }}/${{ github.ref_name }}/${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:

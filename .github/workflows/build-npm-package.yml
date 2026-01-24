@@ -9,9 +9,8 @@ on:
         default: false
         description: build without node_modules cache
 
-
 concurrency:
-  group: ${{ github.repository }}/${{ github.ref }}/${{ github.workflow }}
+  group: ${{ github.repository }}/${{ github.ref_name }}/${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
