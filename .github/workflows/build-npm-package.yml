@@ -7,6 +7,11 @@ on:
         required: false
         type: boolean
         description: build without node_modules cache
+      node-version:
+        required: false
+        type: string
+        default: latest
+        description: NodeJS version for build process
 
 concurrency:
   group: ${{ github.repository }}/${{ github.ref_name }}/${{ github.workflow }}
@@ -24,7 +29,7 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v6
         with:
-          node-version: latest
+          node-version: ${{ inputs.node-version }}
 
       - name: Cache dependencies
         id: cache-deps
@@ -38,6 +43,7 @@ jobs:
         run: npm install
 
       - name: Cache package dist
+        # TODO: удалить это кэширование и устанавливать для последующих операций пакет из артефакта сборки
         id: cache-dist
         uses: actions/cache@v5
         with:
