@@ -22,9 +22,6 @@ jobs:
     name: 'Build NPM package'
     runs-on: ubuntu-latest
     steps:
-      - name: debug
-        run: echo test-test-${{ inputs.ignore-cache }}-test-test
-
       - uses: actions/checkout@v6
         with:
           fetch-depth: 1
@@ -36,14 +33,14 @@ jobs:
 
       - name: Cache dependencies
         id: cache-deps
-        if: ${{ inputs.ignore-cache != 'true' }}
+        if: ${{ inputs.ignore-cache }}
         uses: actions/cache@v5
         with:
           path: node_modules
           key: OS:ubuntu-latest:Node:latest:package.json:${{hashFiles('package.json')}}
 
       - name: Install dependencies
-        if: ${{ inputs.ignore-cache == 'true' || steps.cache-deps.outputs.cache-hit != 'true' }}
+        if: ${{ inputs.ignore-cache || ! steps.cache-deps.outputs.cache-hit }}
         run: npm install
 
       - name: Cache package dist
