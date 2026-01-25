@@ -48,12 +48,12 @@ jobs:
         # if: ${{ inputs.ignore-cache || ! steps.cache-deps.outputs.cache-hit }}
         run: npm install
 
-      - name: Setup editorconfig-checker
-        uses: editorconfig-checker/action-editorconfig-checker@main
-
-      - name: Check files for .editorconfig compliance
-        run: editorconfig-checker -format github-actions
-
+      # - name: Setup editorconfig-checker
+      #   uses: editorconfig-checker/action-editorconfig-checker@main
+      #
+      # - name: Check files for .editorconfig compliance
+      #   run: editorconfig-checker -format github-actions
+      #
       # TODO: use workflow command:
       # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands
       #
@@ -64,12 +64,12 @@ jobs:
       #   if: ${{ always() }}
       #   run: while read -r message; echo "$message"; done < lint.editorconfig-checker.txt
 
-      # - name: Lint
-      #   # run: npm run lint
-      #   uses: super-linter/super-linter/slim@v8.3.2
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     VALIDATE_EDITORCONFIG: true
-      #     VALIDATE_GIT_MERGE_CONFLICT_MARKERS: true
-      #     VALIDATE_MARKDOWN: true
-      #     VALIDATE_TYPESCRIPT_ES: true
+      - name: Lint
+        # run: npm run lint
+        uses: super-linter/super-linter/slim@v8.3.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_EDITORCONFIG: true
+          VALIDATE_GIT_MERGE_CONFLICT_MARKERS: true
+          VALIDATE_MARKDOWN: true
+          VALIDATE_TYPESCRIPT_ES: true
