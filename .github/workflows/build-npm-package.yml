@@ -7,6 +7,11 @@ on:
         required: false
         type: boolean
         description: build without node_modules cache
+      os:
+        required: false
+        type: string
+        default: 'ubuntu-latest'
+        description: Operation system for build process
       node-version:
         required: false
         type: string
@@ -20,7 +25,7 @@ concurrency:
 jobs:
   build:
     name: 'Build NPM package'
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.os }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -37,7 +42,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: node_modules
-          key: OS:ubuntu-latest:Node:latest:package.json:${{hashFiles('package.json')}}
+          key: OS:${{ inputs.os }}:Node:${{ inputs.node-version }}:package.json:${{hashFiles('package.json')}}
 
       - name: Install dependencies
         # if: ${{ inputs.ignore-cache || ! steps.cache-deps.outputs.cache-hit }}
