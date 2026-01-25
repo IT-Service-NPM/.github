@@ -52,7 +52,7 @@ jobs:
         uses: editorconfig-checker/action-editorconfig-checker@main
 
       - name: Check files for .editorconfig compliance
-        run: editorconfig-checker -format github-actions
+        run: editorconfig-checker -format github-actions | xargs echo
 
       # - name: Lint
       #   # run: npm run lint
