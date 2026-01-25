@@ -56,5 +56,4 @@ jobs:
           VALIDATE_EDITORCONFIG: true
           VALIDATE_GIT_MERGE_CONFLICT_MARKERS: true
           VALIDATE_MARKDOWN: true
-          MARKDOWN_CONFIG_FILE: .markdownlint.json
           VALIDATE_TYPESCRIPT_ES: true
