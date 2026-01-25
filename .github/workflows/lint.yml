@@ -49,4 +49,12 @@ jobs:
         run: npm install
 
       - name: Lint
-        run: npm run lint
+        # run: npm run lint
+        uses: super-linter/super-linter/slim@v8.3.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_EDITORCONFIG: true
+          VALIDATE_GIT_MERGE_CONFLICT_MARKERS: true
+          VALIDATE_MARKDOWN: true
+          MARKDOWN_CONFIG_FILE: .markdownlint.json
+          VALIDATE_TYPESCRIPT_ES: true
