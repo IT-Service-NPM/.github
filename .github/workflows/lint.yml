@@ -52,7 +52,17 @@ jobs:
         uses: editorconfig-checker/action-editorconfig-checker@main
 
       - name: Check files for .editorconfig compliance
-        run: editorconfig-checker -format github-actions | while read message; do echo "$message"; done
+        run: editorconfig-checker -format github-actions
+
+      # TODO: use workflow command:
+      # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands
+      #
+      # - name: Check files for .editorconfig compliance
+      #   run: editorconfig-checker -format github-actions > lint.editorconfig-checker.txt
+      #
+      # - name: Write editorconfig-checker results to log
+      #   if: ${{ always() }}
+      #   run: while read -r message; echo "$message"; done < lint.editorconfig-checker.txt
 
       # - name: Lint
       #   # run: npm run lint
