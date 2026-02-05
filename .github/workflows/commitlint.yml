@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 concurrency:
-  group: ${{ github.repository }}/${{ github.ref_name }}/${{ github.workflow }}
+  group: ${{ github.repository }}/${{ github.ref_name }}/${{ github.workflow }}/${{ github.job }}
   cancel-in-progress: true
 
 jobs:
