@@ -18,10 +18,6 @@ on:
         default: latest
         description: NodeJS version for build process
 
-concurrency:
-  group: ${{ github.repository }}/${{ github.ref_name }}/${{ github.workflow }}/${{ github.job }}
-  cancel-in-progress: true
-
 jobs:
   lint:
     name: 'Lint source code, documentation'
