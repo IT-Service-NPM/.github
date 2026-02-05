@@ -36,26 +36,9 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Download package 'dist'
+      - name: Download package
         uses: actions/download-artifact@v6
         with:
-          name: dist
-          path: dist/
-
-      - name: Cache readme.md
-        # TODO: replace with download-artifact
-        id: cache-readme
-        uses: actions/cache@v5
-        with:
-          path: readme.md
-          key: package-readme-${{github.run_id}}
-
-      - name: Cache package.json
-        # TODO: replace with download-artifact
-        id: cache-package-json
-        uses: actions/cache@v5
-        with:
-          path: package.json
-          key: package.json-${{github.run_id}}
+          name: package
 
       - uses: JS-DevTools/npm-publish@v4

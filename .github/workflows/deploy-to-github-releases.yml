@@ -1,0 +1,103 @@
+name: Deployment to GitHub releases
+
+on:
+  workflow_call:
+    inputs:
+      deployment-environment:
+        description: GitHub deployment environment
+        required: false
+        type: string
+        default: GitHub-Releases
+      os:
+        required: false
+        type: string
+        default: 'ubuntu-latest'
+        description: Operation system for build process
+      node-version:
+        required: false
+        type: string
+        default: latest
+        description: NodeJS version for build process
+    outputs:
+      is-new-release:
+        description: predicate - is new release published?
+        value: ${{jobs.deployment.outputs.is-new-release}}
+      version:
+        description: release version
+        value: ${{jobs.deployment.outputs.version}}
+
+concurrency:
+  group: ${{ github.repository }}/${{ github.ref_name }}/${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  deployment:
+    environment: ${{ inputs.deployment-environment }}
+    if: github.event_name == 'workflow_run' || github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      actions: read
+      deployments: write
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    outputs:
+      is-new-release: ${{steps.release-to-GitHub.outputs.new-release-published}}
+      version: ${{steps.release-to-GitHub.outputs.release-version}}
+    runs-on: ${{ inputs.os }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Cache dependencies
+        id: cache-deps
+        uses: actions/cache@v5
+        with:
+          path: node_modules
+          key: OS:${{ inputs.os }}:Node:${{ inputs.node-version }}:package.json:${{hashFiles('package.json')}}
+
+      - name: Install dependencies
+        # if: ${{ inputs.ignore-cache || ! steps.cache-deps.outputs.cache-hit }}
+        run: npm install
+
+      - name: Download package 'dist'
+        uses: actions/download-artifact@v6
+        with:
+          name: dist
+          path: dist/
+
+      - name: Update API documentation
+        run: npm run update-readme-API
+
+      - name: Update readme.md
+        run: npm run update-readme
+
+      # - name: Commit documentation
+      #   uses: stefanzweifel/git-auto-commit-action@v5
+      #   with:
+      #     commit_message: "docs: update API description and examples [skip ci]"
+      #     file_pattern: 'docs/*.md readme.md test/examples/**/readme.md'
+
+      - name: Upload package files
+        uses: actions/upload-artifact@v6
+        with:
+          name: package
+          path: |
+            package.json
+            dist/
+            readme.md
+          if-no-files-found: error
+          retention-days: 1
+
+      - uses: codfish/semantic-release-action@v4
+        id: release-to-GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
