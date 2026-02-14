@@ -17,6 +17,11 @@ on:
         type: string
         default: latest
         description: NodeJS version for build process
+      log-level:
+        required: false
+        type: string
+        default: INFO
+        description: How much output the script will generate to the console. One of ERROR, WARN, NOTICE, INFO, or DEBUG
 
 jobs:
   lint:
@@ -70,3 +75,4 @@ jobs:
           VALIDATE_MARKDOWN: true
           VALIDATE_TYPESCRIPT_ES: true
           TYPESCRIPT_ES_CONFIG_FILE: eslint.config.mjs
+          LOG_LEVEL: ${{ inputs.log-level }}
