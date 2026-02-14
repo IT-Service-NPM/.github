@@ -69,3 +69,4 @@ jobs:
           VALIDATE_GIT_MERGE_CONFLICT_MARKERS: true
           VALIDATE_MARKDOWN: true
           VALIDATE_TYPESCRIPT_ES: true
+          TYPESCRIPT_ES_CONFIG_FILE: eslint.config.mjs
