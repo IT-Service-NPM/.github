@@ -7,7 +7,7 @@ on:
         required: false
         type: string
         description: gist id for badges publishing
-        default: d70e4de09a490afc9fb7a737363b231a
+        default: ${{ vars.BADGES_GIST_ID }}
 
 jobs:
   test:
@@ -51,10 +51,6 @@ jobs:
           name: dist
           path: dist/
 
-      # - name: Check module exports
-      #   if: matrix.main-test-environment
-      #   run: npm run check-exports
-
       - name: Test
         run: npm run test
 
@@ -89,6 +85,8 @@ jobs:
       contents: read
       issues: read
     if: always()
+    env:
+      publish-to-coveralls: ${{ secrets.COVERALLS_REPO_TOKEN != '' }}
 
     steps:
 
@@ -119,3 +117,6 @@ jobs:
         with:
           gist-id: ${{ inputs.badges-gist-id }}
           token: ${{ secrets.GIST_TOKEN }}
+
+      - uses: coverallsapp/github-action@v2
+        if: env.publish-to-coveralls == 'true'
