@@ -61,7 +61,8 @@
 		"vitest",
 		"wagoid",
 		"winget",
-		"wjervis"
+		"wjervis",
+		"ZIZMOR"
 	],
 	"ignoreRegExpList": [
 		"\\[.*?\\]\\(.*?\\)"
