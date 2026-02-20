@@ -76,5 +76,6 @@ jobs:
           VALIDATE_MARKDOWN: true
           VALIDATE_TYPESCRIPT_ES: true
           VALIDATE_YAML: true
+          TYPESCRIPT_ES_CONFIG_FILE: eslint.config.ts
           LINTER_RULES_PATH: .
           LOG_LEVEL: ${{ inputs.log-level }}
