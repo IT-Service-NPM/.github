@@ -69,7 +69,7 @@ jobs:
           path: coverage/
 
       - name: Report Coverage
-        if: matrix.main-test-environment
+        if: matrix.main-test-environment && hashFiles('vitest.config.ts') != ''
         uses:  davelosert/vitest-coverage-report-action@v2
         with:
           file-coverage-mode: all
