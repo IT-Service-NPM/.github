@@ -27,23 +27,28 @@ jobs:
         with:
           fetch-depth: 1
 
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
       - name: Setup NodeJS
         uses: actions/setup-node@v6
         with:
           node-version: ${{ inputs.node-version }}
           cache: pnpm
           package-manager-cache: true
-          cache-dependency-path: package.json, packages/*/package.json
+          cache-dependency-path: '**/package.json'
 
       - uses: pnpm/action-setup@v4
-        name: Install pnpm and packages
+        name: Install packages
         with:
           run_install: true
 
       - name: Build
         run: pnpm run --if-present --recursive build
 
-      - name: Upload package 'dist'
+      - name: Upload packages 'dist'
         uses: actions/upload-artifact@v7
         with:
           name: dist
