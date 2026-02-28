@@ -74,7 +74,7 @@ jobs:
       - name: Update readme.md
         run: npm run update-readme
 
-      - uses: codfish/semantic-release-action@v4
+      - uses: codfish/semantic-release-action@v5
         id: release-to-GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
