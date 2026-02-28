@@ -1,5 +1,6 @@
 # https://github.com/github/safe-settings/blob/main-enterprise/docs/sample-settings/settings.yml
 
+---
 repository:
   # Settings for Code security and analysis
   # Dependabot Alerts
