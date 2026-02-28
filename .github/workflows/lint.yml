@@ -48,7 +48,7 @@ jobs:
           VALIDATE_GIT_MERGE_CONFLICT_MARKERS: true
           # VALIDATE_GITHUB_ACTIONS_ZIZMOR: true
           VALIDATE_MARKDOWN: true
-          VALIDATE_TYPESCRIPT_ES: false
+          VALIDATE_TYPESCRIPT_ES: true
           VALIDATE_YAML: true
           TYPESCRIPT_ES_CONFIG_FILE: eslint.config.ts
           LINTER_RULES_PATH: .
