@@ -31,6 +31,9 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ inputs.node-version }}
+          cache: pnpm
+          package-manager-cache: true
+          cache-dependency-path: package.json, packages/*/package.json
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm and packages
