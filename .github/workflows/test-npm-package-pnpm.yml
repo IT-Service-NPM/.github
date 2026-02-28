@@ -43,33 +43,27 @@ jobs:
           run_install: true
 
       - name: Download package 'dist'
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: dist
-          path: dist/
+          path: packages/
 
       - name: Test
-        run: npm run test
+        run: pnpm run --if-present --recursive test
 
       - name: Upload Test Results
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: test-results--${{ matrix.os }}--${{ matrix.node-version }}
-          path: test/results/junit-report.xml
+          path: packages/*/test/results/junit-report.xml
 
       - name: Upload Test Coverage
         if: matrix.main-test-environment
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
-          path: coverage/
-
-      - name: Report Coverage
-        if: matrix.main-test-environment && hashFiles('vitest.config.ts') != ''
-        uses:  davelosert/vitest-coverage-report-action@v2
-        with:
-          file-coverage-mode: all
+          path: packages/*/coverage/
 
   publish-test-results:
     name: Test results publishing
@@ -92,29 +86,20 @@ jobs:
           fetch-depth: 1
 
       - name: Download artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: test-results--*
-          path: test/results
+          path: packages/
           merge-multiple: false
 
       - name: Download artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: coverage
-          path: coverage/
+          path: packages/
 
       - name: Publish tests results
         uses: EnricoMi/publish-unit-test-result-action@v2
         id: test-results
         with:
-          files: 'test/results/**/*.xml'
-
-      - uses: gaelgirodon/ci-badges-action@v1
-        with:
-          gist-id: ${{ inputs.badges-gist-id }}
-          token: ${{ secrets.GIST_TOKEN }}
-
-      - uses: coverallsapp/github-action@v2
-        if: env.publish-to-coveralls == 'true'
-        continue-on-error: true
+          files: packages/*/test/results/**/*.xml
