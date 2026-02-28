@@ -54,12 +54,14 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ inputs.node-version }}
-          cache: npm
+          cache: pnpm
           package-manager-cache: true
-          cache-dependency-path: package.json
+          cache-dependency-path: package.json, packages/*/package.json
 
-      - name: Install dependencies
-        run: npm install
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm and packages
+        with:
+          run_install: true
 
       - name: Download package 'dist'
         uses: actions/download-artifact@v6
