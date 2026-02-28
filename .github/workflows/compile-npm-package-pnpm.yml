@@ -1,0 +1,49 @@
+name: Compile
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        required: false
+        type: string
+        default: 'ubuntu-latest'
+        description: Operation system for build process
+      node-version:
+        required: false
+        type: string
+        default: latest
+        description: NodeJS version for build process
+
+concurrency:
+  group: ${{ github.repository }}/${{ github.ref_name }}/${{ github.workflow }}/${{ github.job }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: 'Build NPM package'
+    runs-on: ${{ inputs.os }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm and packages
+        with:
+          run_install: true
+
+      - name: Build
+        run: pnpm run --if-present --recursive build
+
+      - name: Upload package 'dist'
+        uses: actions/upload-artifact@v6
+        with:
+          name: dist
+          path: packages/*/dist/
+          if-no-files-found: error
+          retention-days: 1
