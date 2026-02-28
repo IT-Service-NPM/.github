@@ -108,4 +108,4 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v2
         id: test-results
         with:
-          files: packages/*/test/results/**/*.xml
+          files: packages/*/test/results/*.xml
