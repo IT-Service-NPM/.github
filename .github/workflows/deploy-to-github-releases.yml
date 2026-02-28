@@ -1,3 +1,4 @@
+---
 name: Deployment to GitHub releases
 
 on:
