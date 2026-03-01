@@ -95,17 +95,19 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           pattern: test-results--*
-          path: packages/
+          path: test/results
           merge-multiple: false
 
       - name: Download artifacts
         uses: actions/download-artifact@v8
         with:
           name: coverage
-          path: packages/
+          path: packages
+          merge-multiple: true
 
       - name: Publish tests results
         uses: EnricoMi/publish-unit-test-result-action@v2
         id: test-results
+        if: (!cancelled())
         with:
-          files: packages/*/test/results/*.xml
+          files: test/results/*/*/test/results/*.xml
