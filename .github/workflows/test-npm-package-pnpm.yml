@@ -29,30 +29,9 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          run_install: false
+      - uses: "./github/actions/setup"
 
-      - name: Setup NodeJS ${{ matrix.node-version }}
-        id: setup-node
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: pnpm
-          package-manager-cache: true
-          cache-dependency-path: '**/package.json'
-
-      - uses: pnpm/action-setup@v4
-        name: Install packages
-        with:
-          run_install: true
-
-      - name: Download packages 'dist'
-        uses: actions/download-artifact@v8
-        with:
-          name: dist
-          path: packages/
+      - uses: "./github/actions/download-packages-dist"
 
       - name: Test
         run: pnpm run --if-present --recursive test

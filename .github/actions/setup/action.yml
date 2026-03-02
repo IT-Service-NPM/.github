@@ -1,0 +1,14 @@
+# example: https://github.com/anolilab/workflows/blob/main/step/setup/action.yml
+---
+name: "Download packages 'dist'"
+description: "Download packages 'dist' artifacts from 'compile' job"
+
+runs:
+  using: "composite"
+  steps:
+
+  - name: Download packages 'dist'
+    uses: actions/download-artifact@v8
+    with:
+      name: dist
+      path: packages/
