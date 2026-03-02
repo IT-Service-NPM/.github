@@ -24,24 +24,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          run_install: false
-
-      - name: Setup NodeJS ${{ matrix.node-version }}
-        id: setup-node
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: pnpm
-          package-manager-cache: true
-          cache-dependency-path: '**/package.json'
-
-      - uses: pnpm/action-setup@v4
-        name: Install packages
-        with:
-          run_install: true
+      - uses: "IT-Service-NPM/.github/.github/actions/setup@main"
 
       - name: Lint
         # run: npm run lint
