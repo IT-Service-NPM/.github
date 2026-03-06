@@ -29,9 +29,9 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: "./.github/actions/setup"
+      - uses: ./.github/actions/setup
 
-      - uses: "./.github/actions/download-packages-dist"
+      - uses: ./.github/actions/download-package-dist
 
       - name: Test
         run: pnpm run --if-present test
