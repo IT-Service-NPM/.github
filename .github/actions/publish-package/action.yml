@@ -11,11 +11,11 @@ runs:
     with:
       fetch-depth: 0
 
-  - uses: ./.github/actions/setup
+  - uses: IT-Service-NPM/.github/.github/actions/setup@main
     with:
       node-version: "24.x"
 
-  - uses: ./.github/actions/download-package-dist
+  - uses: IT-Service-NPM/.github/.github/actions/download-package-dist@main
 
   - name: Update API documentation
     shell: bash

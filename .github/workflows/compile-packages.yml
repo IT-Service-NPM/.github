@@ -21,14 +21,14 @@ concurrency:
 
 jobs:
   build:
-    name: 'Build NPM package'
+    name: Build NPM package
     runs-on: ${{ inputs.os }}
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
-      - uses: "./.github/actions/setup"
+      - uses: IT-Service-NPM/.github/.github/actions/setup@main
 
       - name: Build
         run: pnpm run --if-present --recursive build

@@ -33,7 +33,7 @@ jobs:
       id-token: write
     steps:
 
-      - uses: ./.github/actions/publish-packages
+      - uses: IT-Service-NPM/.github/.github/actions/publish-packages@main
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
