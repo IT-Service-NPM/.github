@@ -4,10 +4,6 @@ name: Compile
 on:
   workflow_call:
     inputs:
-      ignore-cache:
-        required: false
-        type: boolean
-        description: build without node_modules cache
       os:
         required: false
         type: string
@@ -32,21 +28,12 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Setup NodeJS
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ inputs.node-version }}
-          cache: npm
-          package-manager-cache: true
-          cache-dependency-path: package.json
-
-      - name: Install dependencies
-        run: npm install
+      - uses: "./.github/actions/setup"
 
       - name: Build
-        run: npm run build
+        run: pnpm run --if-present build
 
-      - name: Upload package 'dist'
+      - name: Upload packages 'dist'
         uses: actions/upload-artifact@v7
         with:
           name: dist

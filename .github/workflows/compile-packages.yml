@@ -28,7 +28,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: "IT-Service-NPM/.github/.github/actions/setup@main"
+      - uses: "./.github/actions/setup"
 
       - name: Build
         run: pnpm run --if-present --recursive build

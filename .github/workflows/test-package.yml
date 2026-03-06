@@ -29,30 +29,16 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Setup NodeJS ${{ matrix.node-version }}
-        id: setup-node
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
-          package-manager-cache: true
-          cache-dependency-path: package.json
+      - uses: "./.github/actions/setup"
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Download package 'dist'
-        uses: actions/download-artifact@v8
-        with:
-          name: dist
-          path: dist/
+      - uses: "./.github/actions/download-packages-dist"
 
       - name: Test
-        run: npm run test
+        run: pnpm run --if-present test
 
       - name: Upload Test Results
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: test-results--${{ matrix.os }}--${{ matrix.node-version }}
           path: test/results/junit-report.xml
@@ -63,12 +49,6 @@ jobs:
         with:
           name: coverage
           path: coverage/
-
-      - name: Report Coverage
-        if: matrix.main-test-environment && hashFiles('vitest.config.ts') != ''
-        uses:  davelosert/vitest-coverage-report-action@v2
-        with:
-          file-coverage-mode: all
 
   publish-test-results:
     name: Test results publishing
@@ -94,7 +74,7 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           pattern: test-results--*
-          path: test/results
+          path: test/results/
           merge-multiple: false
 
       - name: Download artifacts
@@ -102,12 +82,14 @@ jobs:
         with:
           name: coverage
           path: coverage/
+          merge-multiple: true
 
       - name: Publish tests results
         uses: EnricoMi/publish-unit-test-result-action@v2
         id: test-results
+        if: (!cancelled())
         with:
-          files: 'test/results/**/*.xml'
+          files: test/results/**/*.xml
 
       - uses: gaelgirodon/ci-badges-action@v1
         with:

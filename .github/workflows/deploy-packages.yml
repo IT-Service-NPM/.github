@@ -1,0 +1,65 @@
+---
+name: Deployment to npmJS repository
+
+on:
+  workflow_call:
+    inputs:
+      deployment-environment:
+        description: GitHub deployment environment
+        required: false
+        type: string
+        default: npm
+      force:
+        required: false
+        type: boolean
+        description: force deployment
+
+concurrency:
+  group: ${{ github.repository }}/${{ github.ref_name }}/${{ github.workflow }}/${{ github.job }}
+  cancel-in-progress: true
+
+jobs:
+  deployment:
+    environment: ${{ inputs.deployment-environment }}
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      deployments: write
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    steps:
+
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup
+        with:
+          node-version: "24.x"
+
+      - name: "Install npm@7"
+        #workaround for https://github.com/pnpm/pnpm/issues/10703
+        shell: bash
+        run: npm install -g npm@7
+
+      - uses: ./.github/actions/download-packages-dist
+
+      - name: Update API documentation
+        run: pnpm run --if-present --recursive build:readme:API
+
+      - name: Update readme.md
+        run: pnpm run --if-present --recursive build:readme
+
+      - name: "Semantic Release"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GIT_AUTHOR_NAME: "github-actions-shell"
+          GIT_AUTHOR_EMAIL: "github-actions[bot]@users.noreply.github.com"
+          GIT_COMMITTER_NAME: "github-actions-shell"
+          GIT_COMMITTER_EMAIL: "github-actions[bot]@users.noreply.github.com"
+        run: "pnpm exec multi-semantic-release"

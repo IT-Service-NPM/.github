@@ -35,11 +35,25 @@ jobs:
 
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
-      - name: Download package
-        uses: actions/download-artifact@v8
+      - uses: ./.github/actions/setup
         with:
-          name: package
+          node-version: "24.x"
 
-      - uses: JS-DevTools/npm-publish@v4
+      - uses: ./.github/actions/download-packages-dist
+
+      - name: Update API documentation
+        run: pnpm run --if-present build:readme:API
+
+      - name: Update readme.md
+        run: pnpm run --if-present build:readme
+
+      - uses: codfish/semantic-release-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GIT_AUTHOR_NAME: "github-actions-shell"
+          GIT_AUTHOR_EMAIL: "github-actions[bot]@users.noreply.github.com"
+          GIT_COMMITTER_NAME: "github-actions-shell"
+          GIT_COMMITTER_EMAIL: "github-actions[bot]@users.noreply.github.com"
