@@ -25,7 +25,7 @@ runs:
     shell: bash
     run: pnpm run --if-present build:readme
 
-  - uses: codfish/semantic-release-action@v4
+  - uses: cycjimmy/semantic-release-action@v6
     env:
       GIT_AUTHOR_NAME: "github-actions-shell"
       GIT_AUTHOR_EMAIL: "github-actions[bot]@users.noreply.github.com"
