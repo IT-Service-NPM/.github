@@ -89,4 +89,4 @@ jobs:
         id: test-results
         if: (!cancelled())
         with:
-          files: test/results/*/*/test/results/*.xml
+          files: test/results/*/*/test/results/junit-report.xml
