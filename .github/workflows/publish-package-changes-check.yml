@@ -1,0 +1,43 @@
+---
+name: Test
+
+on:
+  workflow_call:
+
+jobs:
+  publish-test-results:
+    name: Test results publishing
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: read
+      issues: read
+    if: always()
+
+    steps:
+
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v8
+        with:
+          pattern: test-results--*
+          path: test/results/
+          merge-multiple: false
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: coverage
+          path: coverage/
+          merge-multiple: true
+
+      - name: Publish tests results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        id: test-results
+        if: (!cancelled())
+        with:
+          files: test/results/*/junit-report.xml

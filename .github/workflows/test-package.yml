@@ -12,90 +12,25 @@ on:
 
 jobs:
   test:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
-        node-version: ['22.x', '23.x', '24.x', 'latest']
-        include:
-          - os: 'ubuntu-latest'
-            node-version: 'latest'
-            main-test-environment: true
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
-
-      - uses: IT-Service-NPM/.github/.github/actions/setup@main
-
-      - uses: IT-Service-NPM/.github/.github/actions/download-package-dist@main
-
-      - name: Test
-        run: pnpm run --if-present test
-
-      - name: Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: test-results--${{ matrix.os }}--${{ matrix.node-version }}
-          path: test/results/junit-report.xml
-
-      - name: Upload Test Coverage
-        if: matrix.main-test-environment
-        uses: actions/upload-artifact@v7
-        with:
-          name: coverage
-          path: coverage/
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: read
+      issues: read
+    uses: IT-Service-NPM/.github/.github/workflows/test-only-package.yml@main
+    secrets: inherit
 
   publish-test-results:
     name: Test results publishing
     needs:
       - test
-    runs-on: ubuntu-latest
     permissions:
       checks: write
       pull-requests: write
       contents: read
       issues: read
     if: always()
-    env:
-      publish-to-coveralls: ${{ secrets.COVERALLS_REPO_TOKEN != '' }}
-
-    steps:
-
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v8
-        with:
-          pattern: test-results--*
-          path: test/results/
-          merge-multiple: false
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v8
-        with:
-          name: coverage
-          path: coverage/
-          merge-multiple: true
-
-      - name: Publish tests results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        id: test-results
-        if: (!cancelled())
-        with:
-          files: test/results/*/junit-report.xml
-
-      - uses: gaelgirodon/ci-badges-action@v1
-        with:
-          gist-id: ${{ inputs.badges-gist-id }}
-          token: ${{ secrets.GIST_TOKEN }}
-
-      - uses: coverallsapp/github-action@v2
-        if: env.publish-to-coveralls == 'true'
-        continue-on-error: true
+    uses: IT-Service-NPM/.github/.github/workflows/publish-package-test-result.yml@main
+    with:
+      badges-gist-id: ${{ inputs.badges-gist-id }}
+    secrets: inherit
