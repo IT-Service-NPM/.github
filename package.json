@@ -1,0 +1,32 @@
+{
+	"private": true,
+	"name": "@it-service-npm/github-org-repo",
+	"version": "1.0.0",
+	"author": {
+		"name": "Sergei S. Betke",
+		"email": "Sergey.S.Betke@yandex.ru",
+		"url": "https://github.com/sergey-s-betke"
+	},
+	"homepage": "https://github.com/IT-Service-NPM/.github",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/IT-Service-NPM/.github.git"
+	},
+	"bugs": {
+		"url": "https://github.com/IT-Service-NPM/.github/issues"
+	},
+	"license": "MIT",
+	"engines": {
+		"node": ">=22.0"
+	},
+	"type": "module",
+	"scripts": {},
+	"packageManager": "pnpm@10.30.3",
+	"devDependencies": {
+		"@commitlint/cli": "^20.3.0",
+		"@commitlint/config-conventional": "^20.3.0",
+		"@commitlint/types": "^20.2.0",
+		"tsx": "^4.21.0",
+		"typescript": "^5.9.3"
+	}
+}
