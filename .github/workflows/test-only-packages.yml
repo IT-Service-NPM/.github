@@ -9,11 +9,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
-        node-version: ['22.x', '23.x', '24.x', 'latest']
+        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
+        node-version: ["24.x", "25.x", "26.x", "latest"]
         include:
-          - os: 'ubuntu-latest'
-            node-version: 'latest'
+          - os: "ubuntu-latest"
+            node-version: "latest"
             main-test-environment: true
 
     runs-on: ${{ matrix.os }}
@@ -43,4 +43,3 @@ jobs:
         with:
           name: coverage
           path: packages/*/coverage/
-
