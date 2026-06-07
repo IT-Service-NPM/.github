@@ -25,6 +25,11 @@ runs:
     shell: bash
     run: pnpm run --if-present build:readme
 
+  - name: Create .npmrc
+    # fix pnpm v11 incompatibility
+    shell: sh
+    run: echo "git-checks=false" >> .npmrc
+
   - uses: cycjimmy/semantic-release-action@v6
     with:
       extends: |
